@@ -1,0 +1,36 @@
+# Control de versiones
+.git
+.gitignore
+ 
+# Variables de entorno y secretos: NUNCA deben llegar a la imagen
+.env
+.env.*
+*.pem
+*.key
+ 
+# Dependencias: se instalan dentro del contenedor, no se copian desde el host
+node_modules
+npm-debug.log
+yarn-debug.log
+yarn-error.log
+*.log
+ 
+# Archivos de Docker: no necesitan estar dentro de su propia imagen
+Dockerfile*
+docker-compose*
+compose*
+.dockerignore
+ 
+# Editores / sistema operativo
+.vscode
+.idea
+.DS_Store
+ 
+# Build / pruebas (por si más adelante agregas TypeScript o tests)
+dist
+build
+coverage
+ 
+# Documentación
+LICENSE
+README.md
