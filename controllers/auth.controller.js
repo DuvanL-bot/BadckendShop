@@ -1,4 +1,5 @@
 const pool = require("../conex");
+const fs = require("fs").promises;
 const bcrypt = require("bcryptjs");
 const jwt = require("jsonwebtoken");
 const nodemailer = require("nodemailer");
@@ -78,6 +79,9 @@ async function ForgetPassword(email) {
         refreshToken: process.env.REFRESH_TOKEN,
         accessToken: accessToken.token,
       },
+      tls: {
+        rejectUnauthorized: false,
+      },
     });
 
     const token = jwt.sign(
@@ -91,21 +95,14 @@ async function ForgetPassword(email) {
       "UPDATE users SET token = $1, reset_token_expires = $2 WHERE email = $3 RETURNING *";
     await pool.query(queryUpdate, [token, expireDate, email]);
     const resetLink = `http://localhost:5173/changes-password?token=${token}`;
+    const rutaPlantilla = path.join(__dirname, "emailTemplate.html");
+    let htmlContenido = await fs.readFile(rutaPlantilla, "utf8");
+    htmlContenido = htmlContenido.replace("{{resetLink}}", resetLink);
     const mailOptions = {
       from: '"Soporte de tu Aplicación" <tu-correo@gmail.com>',
       to: email,
       subject: "Recuperación de Contraseña",
-      html: `
-        <div style="font-family: Arial, sans-serif; max-width: 600px; margin: auto; padding: 20px; border: 1px solid #eee;">
-          <h2 style="color: #333;">Restablecer tu contraseña</h2>
-          <p>Recibimos una solicitud para restablecer la contraseña de tu cuenta.</p>
-          <p>Para continuar, haz clic en el siguiente botón. Este enlace expirará en 15 minutos:</p>
-          <div style="text-align: center; margin: 30px 0;">
-            <a href="${resetLink}" style="background-color: #4CAF50; color: white; padding: 12px 20px; text-decoration: none; border-radius: 5px; font-weight: bold;">Cambiar Contraseña</a>
-          </div>
-          <p style="color: #777; font-size: 12px;">Si tú no solicitaste este cambio, puedes ignorar este correo de manera segura.</p>
-        </div>
-      `,
+      html: htmlContenido,
     };
     await transporter.sendMail(mailOptions);
     return { message: `Correo de recuperación enviado ` };

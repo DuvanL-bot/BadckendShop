@@ -2,7 +2,7 @@ const pool = require("../conex");
 
 async function saveInfoFav(id_product, id_user) {
   const query =
-    "INSERT INTO favorites (id_product, id_user ) VALUES($1, $2) RETURNING *";
+    "INSERT INTO favorites (id_product, id_user ) VALUES($1, $2) ON CONFLICT (id_product, id_user) DO NOTHING RETURNING *";
   const valores = [id_product, id_user];
   try {
     const res = await pool.query(query, valores);

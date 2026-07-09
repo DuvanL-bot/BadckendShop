@@ -52,7 +52,7 @@ const response = await resetTokenExpires(token, newPassword);
 
     res.status(200).json(response);
   } catch (error) {
-    res.status(401).json({error: err.message})
+    res.status(401).json({ error: error.message });
   }
 });
 
