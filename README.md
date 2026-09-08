@@ -148,10 +148,10 @@ REFRESH_TOKEN=tu_refresh_token
 
 | Método | Endpoint | Descripción | Protegido |
 |---|---|---|---|
-| `POST` | `/auth/register` | Registra un nuevo usuario | ❌ |
-| `POST` | `/auth/login` | Inicia sesión y devuelve un JWT | ❌ |
-| `POST` | `/auth/ForgetPassword` | Envía correo de recuperación | ❌ |
-| `POST` | `/auth/reset-password` | Restablece la contraseña con token | ❌ |
+| `POST` | `/auth/register` | Registra un nuevo usuario | ✅  |
+| `POST` | `/auth/login` | Inicia sesión y devuelve un JWT | ✅  |
+| `POST` | `/auth/ForgetPassword` | Envía correo de recuperación | ✅  |
+| `POST` | `/auth/reset-password` | Restablece la contraseña con token | ✅  |
 
 ### 📦 Productos — `/products`
 
